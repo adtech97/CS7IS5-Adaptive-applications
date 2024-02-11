@@ -1,0 +1,125 @@
+\documentclass[a4paper,10pt]{article}
+
+%------------------------- PACKAGES ------------------------- %
+% page margins
+\usepackage[top = 1.5cm, bottom = 1.5cm, left = 1.5cm, right = 1.5cm]{geometry}
+
+\usepackage{titlesec}
+
+% required for tables
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{caption}
+\captionsetup[table]{skip=10pt}
+
+% required for images
+\usepackage{graphicx}
+\usepackage{subfig}
+
+% required to fix paragraph auto-indent
+\usepackage{setspace}
+\setlength{\parindent}{0in}
+
+% place images where you want
+\usepackage{float}
+
+% required for nice headers
+\usepackage{fancyhdr}
+
+% % required for generating links for ToC
+% \usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
+
+% required for showing code
+\usepackage{listings}
+\usepackage{xcolor}
+
+% For author affiliations
+\usepackage{authblk}
+
+\definecolor{darkblue}{RGB}{0,0,139}
+\definecolor{golden}{rgb}{0.85, 0.65, 0.13}
+
+\usepackage{sectsty}
+\sectionfont{\color{darkblue}}
+\subsectionfont{\color{darkblue}}
+\subsubsectionfont{\color{darkblue}}
+
+% ----------------------------------------------------------- %
+
+%-------------------- HEADER & FOOTER ----------------------- %
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\textcolor{darkblue}{\footnotesize CS7IS5 - Adaptive Systems: Project Outline}}
+\rhead{\textcolor{darkblue}{\footnotesize Fitness Companion - Team Aphrodite}}
+\cfoot{\footnotesize \thepage}
+% ----------------------------------------------------------- %
+
+%----------------------- DOCUMENT --------------------------- %
+\begin{document}
+
+% disable header on first page
+\thispagestyle{empty}
+% table for first page header
+\textcolor{darkblue}{
+    \begin{tabular}{p{17.5cm}}
+        {\large \bf CS7IS5 - Adaptive Systems} \hfill Trinity College Dublin \\
+        \hfill Hilary Term 2024 \\
+        \\
+        \hline
+        \vspace*{0.05cm}
+         Aadesh\ Rasal \hfill Anupal\ Mishra        \\
+         (xyz@tcd.ie, 12345678) \hfill (anmishra@tcd.ie, 23332008) \\
+         \vspace*{0.02cm}
+         Frason\ Kalapurackal \hfill Juliette\ Van\ Marken        \\
+         (xyz@tcd.ie, 12345678) \hfill (xyz@tcd.ie, 12345678) \\
+        % \hline
+    \end{tabular}
+}
+\vspace*{0.2cm}
+
+\begin{center}
+    {\Large \bf Fitness Companion - Project Outline}
+    \vspace{2mm}
+\end{center}
+
+\tableofcontents
+
+\section{Project Goals and Motivation}
+
+% problem statement and motivation
+% points: plethora of info, users abandon goals, apps don't combine both, easily consumable, user-driven
+
+In the last decade and a half, an increasing number of people have become aware of the health benefits associated with maintaining a regular fitness routine, which include enhanced productivity and happiness.
+While this awareness serves as an incentive for individuals to establish fitness objectives, the overwhelming amount of information available online often becomes a hindrance.
+Most success stories involve consistent gym attendance and the guidance of a personal trainer, both of which can come with significant membership fees.
+Moreover, there are only a few applications available that offer both workout routines and diet plans.
+As a result, most individuals tend to abandon their fitness goals.
+
+To address this challenge, we propose a user-centric fitness tracking application that provides straightforward and accessible information. \\
+
+We define following as our core project goals:
+
+\begin{itemize}
+    \item Enable users to define fitness goals and monitor progress.
+    \item Users receive customizable recommendations for gym workouts and dietary plans.
+\end{itemize}
+
+The following enhancements will be introduced as optional features, subject to time constraints:
+\begin{itemize}
+    \item Recipies for dishes that are included in diet plan recommendations.
+    \item Adaptive search engine for the user to interact with the application instead of filling a questionnaire.
+\end{itemize}
+
+\pagebreak
+
+\section{Technical Summary and Proposed Architecture}
+
+\section{Roles \& Responsibilities}
+
+\section{Timeline}
+
+\section{AI Tools}
+We did not make use of AI tools in the preparation of this project.
+
+\end{document}
