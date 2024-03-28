@@ -17,12 +17,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -36,6 +30,8 @@
     ]
   },
   "devDependencies": {
-    "node-sass": "^7.0.3"
+    "node-sass": "^7.0.3",
+    "saas": "^1.0.0",
+    "sass": "^1.72.0"
   }
 }
