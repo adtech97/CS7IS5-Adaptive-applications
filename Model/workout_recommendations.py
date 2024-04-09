@@ -106,8 +106,8 @@ class WorkoutRecommendations:
         """
         encoded_vectors = []
         for index in selected_dataset_indices:
-            record = self.data_encoded[self.data_encoded["Unnamed: 0"] == index].to_dict(orient='records')[0]
-            encodings = {key: value for key, value in record.items() if
+            record = self.workout_details(index)
+            encodings = {key: int(value) for key, value in record.items() if
                          key not in ['Title', 'Desc', 'Cosine_Similarity', 'Unnamed: 0']}
             encoded_vectors.append(encodings)
 
@@ -119,6 +119,9 @@ class WorkoutRecommendations:
             results.append(result)
 
         return results
+
+    def workout_details(self, dataset_index):
+        return self.data_encoded[self.data_encoded["Unnamed: 0"] == dataset_index].to_dict(orient='records')[0]
 
 
 def _get_unique_dicts(dicts):

@@ -23,15 +23,16 @@ class ExerciseHistory(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     exercise_id = Column(Integer, index=True)
-    # exercise_title = Column(String, index=True)
-    # exercise_type = Column(String, index=True)
-    # exercise_body_part = Column(String, index=True)
-    # exercise_equipment = Column(String, index=True)
-    # exercise_level = Column(String, index=True)
-
     user_id = Column(Integer, ForeignKey("user.id"))
     timestamp = Column(DateTime, default=datetime.utcnow)
 
+    def to_dict(self):
+        return {
+                "id": self.id,
+                "exercise_id": self.exercise_id,
+                "user_id": self.user_id,
+                "timestamp": self.timestamp
+            }
 
 
 class FoodHistory(Base):
@@ -41,3 +42,11 @@ class FoodHistory(Base):
     food_id = Column(Integer, index=True)
     user_id = Column(Integer, ForeignKey("user.id"))
     timestamp = Column(DateTime, default=datetime.utcnow)
+
+    def to_dict(self):
+        return {
+                "id": self.id,
+                "food_id": self.food_id,
+                "user_id": self.user_id,
+                "timestamp": self.timestamp
+            }

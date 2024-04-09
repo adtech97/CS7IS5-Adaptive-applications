@@ -109,7 +109,14 @@ async def log_food(
 @app.get("/exercise/history")
 async def get_exercise_history(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
     history = db.query(ExerciseHistory).filter(ExerciseHistory.user_id == user_id).all()
-    return history
+
+    ret_data = []
+    for history_item in history:
+        history_item_dict =  history_item.to_dict()
+        history_item_dict["details"] = app.state.workout_recommender.workout_details(history_item_dict["exercise_id"])
+        ret_data.append(history_item_dict)
+
+    return ret_data
 
 
 @app.get("/food/history")
