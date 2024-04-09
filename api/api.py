@@ -7,12 +7,10 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import Security
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
-from database.db import SessionLocal, engine, Base
+from database.db import SessionLocal
 from database.models import User, ExerciseHistory, FoodHistory
 
 app = FastAPI()
-Base.metadata.create_all(bind=engine)
-
 
 async def get_current_user_id(token: str = Security(utils.oauth2_scheme)):
     try:
@@ -78,7 +76,7 @@ def _create_access_token(user_id: int, expires_delta: timedelta = None):
     return encoded_jwt
 
 
-@app.post("/log/exercise")
+@app.post("/exercise/log")
 async def log_exercise(
     exercise_id: int = Form(...),
     user_id: int = Depends(get_current_user_id),
@@ -93,7 +91,7 @@ async def log_exercise(
     return {"message": "Exercise logged successfully."}
 
 
-@app.post("/log/food")
+@app.post("/food/log")
 async def log_food(
     food_id: int = Form(...),
     user_id: int = Depends(get_current_user_id),
@@ -108,13 +106,13 @@ async def log_food(
     return {"message": "Food logged successfully."}
 
 
-@app.get("/history/exercise")
+@app.get("/exercise/history")
 async def get_exercise_history(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
     history = db.query(ExerciseHistory).filter(ExerciseHistory.user_id == user_id).all()
     return history
 
 
-@app.get("/history/food")
+@app.get("/food/history")
 async def get_food_history(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
     history = db.query(FoodHistory).filter(FoodHistory.user_id == user_id).all()
     return history
