@@ -5,7 +5,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 class WorkoutRecommendations:
     def __init__(self, dataset_path):
+        print("Reading data from {}".format(dataset_path))
         data = pd.read_csv(dataset_path)
+
+        print("Processing dataset")
         data.drop(columns=['Rating', 'RatingDesc'], inplace=True)
 
         categorical_columns = ['Type', 'BodyPart', 'Equipment', 'Level']
@@ -46,12 +49,7 @@ class WorkoutRecommendations:
 
         data_encoded.iloc[:, 3:] = data_encoded.iloc[:, 3:] #.astype(int)
         self.data_encoded = data_encoded.dropna(subset=['Desc'])
-
-        # print("0\n", self.data_encoded[self.data_encoded["Unnamed: 0"] == 0])
-        #
-        # print("500\n", self.data_encoded[self.data_encoded["Unnamed: 0"] == 500])
-        #
-        # print("2916\n", self.data_encoded[self.data_encoded["Unnamed: 0"] == 2916])
+        print("Successfully loaded and encoded dataset.")
 
     def get_recommendations(self, user_preferences, n):
         user_vector = np.array(list(user_preferences.values())).reshape(1, -1)
