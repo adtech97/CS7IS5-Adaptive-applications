@@ -81,7 +81,7 @@ class WorkoutRecommendations:
                 'Title': record['Title'],
                 'Desc': record['Desc'],
                 'Dataset Index': record['Unnamed: 0'],  # Including the 'Unnamed: 0' column value.
-                'encoded_values': {key: value for key, value in record.items() if
+                'encoded_values': {key: int(value) for key, value in record.items() if
                                    key not in ['Title', 'Desc', 'Cosine_Similarity', 'Unnamed: 0']}
             }
 
