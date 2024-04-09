@@ -44,7 +44,7 @@ class WorkoutRecommendations:
         ]
         data_encoded.drop(columns=columns_to_drop, inplace=True)
 
-        data_encoded.iloc[:, 3:] = data_encoded.iloc[:, 3:].astype(int)
+        data_encoded.iloc[:, 3:] = data_encoded.iloc[:, 3:] #.astype(int)
         self.data_encoded = data_encoded.dropna(subset=['Desc'])
 
         # print("0\n", self.data_encoded[self.data_encoded["Unnamed: 0"] == 0])
