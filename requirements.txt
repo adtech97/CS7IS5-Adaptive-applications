@@ -6,3 +6,7 @@ passlib
 bcrypt
 python-jose
 python-multipart
+
+numpy
+pandas
+scikit-learn

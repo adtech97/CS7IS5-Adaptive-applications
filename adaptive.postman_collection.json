@@ -52,6 +52,20 @@
 		},
 		{
 			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res = pm.response.json();\r",
+							"pm.globals.set(\"token\", res.access_token)\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -90,14 +104,14 @@
 			"response": []
 		},
 		{
-			"name": "log food",
+			"name": "food log entry",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzExMzY4MTQwfQ.aeYW3uL2IwKos_ihQTtYOH2EUZEetycASSgnBfRKlZA",
+							"value": "{{token}}",
 							"type": "string"
 						}
 					]
@@ -115,21 +129,21 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:8080/log/food",
+					"raw": "localhost:8080/food/log",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"log",
-						"food"
+						"food",
+						"log"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "history food",
+			"name": "food details",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -139,7 +153,50 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzExMzY4MTQwfQ.aeYW3uL2IwKos_ihQTtYOH2EUZEetycASSgnBfRKlZA",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "food_id",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/food/details/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"food",
+						"details",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "food history",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
 							"type": "string"
 						}
 					]
@@ -151,28 +208,28 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "localhost:8080/history/food",
+					"raw": "localhost:8080/food/history",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"history",
-						"food"
+						"food",
+						"history"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "log exercise",
+			"name": "exercise log entry",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzExMzY4MTQwfQ.aeYW3uL2IwKos_ihQTtYOH2EUZEetycASSgnBfRKlZA",
+							"value": "{{token}}",
 							"type": "string"
 						}
 					]
@@ -184,27 +241,27 @@
 					"formdata": [
 						{
 							"key": "exercise_id",
-							"value": "1",
+							"value": "2",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:8080/log/exercise",
+					"raw": "localhost:8080/exercise/log",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"log",
-						"exercise"
+						"exercise",
+						"log"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "history exercise",
+			"name": "exercise history",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -214,7 +271,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzExMzY4MTQwfQ.aeYW3uL2IwKos_ihQTtYOH2EUZEetycASSgnBfRKlZA",
+							"value": "{{token}}",
 							"type": "string"
 						}
 					]
@@ -226,14 +283,416 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "localhost:8080/history/exercise",
+					"raw": "localhost:8080/exercise/history",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"history",
-						"exercise"
+						"exercise",
+						"history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "exercise search",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "type_cardio",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "type_strength",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "type_stretching",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_abdominals",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_biceps",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_chest",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_forearms",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_neck",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_shoulders",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_triceps",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "level_beginner",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "level_expert",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "level_intermediate",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "equipment_gym",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "equipment_body_only",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_legs",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_back",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_fullbody",
+							"value": "0",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/exercise/preferences",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exercise",
+						"preferences"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "exercise preferences",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:8080/exercise/preferences",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exercise",
+						"preferences"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "exercise preferences",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "type_cardio",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "type_strength",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "type_stretching",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_abdominals",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_biceps",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_chest",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_forearms",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_neck",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_shoulders",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_triceps",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "level_beginner",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "level_expert",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "level_intermediate",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "equipment_gym",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "equipment_body_only",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_legs",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_back",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "bodypart_fullbody",
+							"value": "0",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/exercise/search",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exercise",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "exercise recommendations history",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:8080/exercise/recommendations/history",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exercise",
+						"recommendations",
+						"history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "exercise recommendations preferences",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:8080/exercise/recommendations/preferences",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exercise",
+						"recommendations",
+						"preferences"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "exercise details",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "food_id",
+							"value": "2",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/exercise/details/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exercise",
+						"details",
+						"1"
 					]
 				}
 			},
