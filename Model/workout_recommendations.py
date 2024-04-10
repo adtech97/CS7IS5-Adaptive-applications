@@ -114,7 +114,7 @@ class WorkoutRecommendations:
         results = []
         for unique_dict in unique_dicts:
             result = self.get_recommendations(unique_dict, n)
-            results.append(result)
+            results.extend(result)
 
         return results
 

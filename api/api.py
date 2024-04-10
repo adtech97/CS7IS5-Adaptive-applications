@@ -8,7 +8,7 @@ from fastapi import Security
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from database.db import SessionLocal
-from database.models import User, ExerciseHistory, FoodHistory
+from database.models import User, ExerciseHistory, FoodHistory, ExercisePreferences
 
 app = FastAPI()
 
@@ -129,29 +129,133 @@ async def search_exercise(
         equipment_body_only: int = Form(...),
         bodypart_legs: int = Form(...),
         bodypart_back: int = Form(...),
-        bodypart_fullbody: int = Form(...),
-        user_id: int = Depends(get_current_user_id)):
+        bodypart_fullbody: int = Form(...)
+):
 
     return app.state.workout_recommender.get_recommendations({
-        "Type_Cardio": type_cardio,
-        "Type_Strength": type_strength,
-        "Type_Stretching": type_stretching,
-        "BodyPart_Abdominals": bodypart_abdominals,
-        "BodyPart_Biceps": bodypart_biceps,
-        "BodyPart_Chest": bodypart_chest,
-        "BodyPart_Forearms": bodypart_forearms,
-        "BodyPart_Neck": bodypart_neck,
-        "BodyPart_Shoulders": bodypart_shoulders,
-        "BodyPart_Triceps": bodypart_triceps,
-        "Level_Beginner": level_beginner,
-        "Level_Expert": level_expert,
-        "Level_Intermediate": level_intermediate,
-        "Equipment_Gym": equipment_gym,
-        "Equipment_Body_Only": equipment_body_only,
-        "BodyPart_Legs": bodypart_legs,
-        "BodyPart_Back": bodypart_back,
-        "BodyPart_FullBody": bodypart_fullbody
+        "type_cardio": type_cardio,
+        "type_strength": type_strength,
+        "type_stretching": type_stretching,
+        "bodypart_abdominals": bodypart_abdominals,
+        "bodypart_biceps": bodypart_biceps,
+        "bodypart_chest": bodypart_chest,
+        "bodypart_forearms": bodypart_forearms,
+        "bodypart_neck": bodypart_neck,
+        "bodypart_shoulders": bodypart_shoulders,
+        "bodypart_triceps": bodypart_triceps,
+        "level_beginner": level_beginner,
+        "level_expert": level_expert,
+        "level_intermediate": level_intermediate,
+        "equipment_gym": equipment_gym,
+        "equipment_body_only": equipment_body_only,
+        "bodypart_legs": bodypart_legs,
+        "bodypart_back": bodypart_back,
+        "bodypart_fullbody": bodypart_fullbody
     }, 10)
+
+
+@app.post("/exercise/preferences")
+async def set_exercise_preferences(
+        type_cardio: int = Form(...),
+        type_strength: int = Form(...),
+        type_stretching: int = Form(...),
+        bodypart_abdominals: int = Form(...),
+        bodypart_biceps: int = Form(...),
+        bodypart_chest: int = Form(...),
+        bodypart_forearms: int = Form(...),
+        bodypart_neck: int = Form(...),
+        bodypart_shoulders: int = Form(...),
+        bodypart_triceps: int = Form(...),
+        level_beginner: int = Form(...),
+        level_expert: int = Form(...),
+        level_intermediate: int = Form(...),
+        equipment_gym: int = Form(...),
+        equipment_body_only: int = Form(...),
+        bodypart_legs: int = Form(...),
+        bodypart_back: int = Form(...),
+        bodypart_fullbody: int = Form(...),
+        user_id: int = Depends(get_current_user_id),
+        db: Session = Depends(get_db)
+):
+    # Attempt to find an existing preference record for the user
+    preferences = db.query(ExercisePreferences).filter(ExercisePreferences.user_id == user_id).first()
+
+    if preferences:
+        preferences.type_cardio = type_cardio
+        preferences.type_strength = type_strength
+        preferences.type_stretching = type_stretching
+        preferences.bodypart_abdominals = bodypart_abdominals
+        preferences.bodypart_biceps = bodypart_biceps
+        preferences.bodypart_chest = bodypart_chest
+        preferences.bodypart_forearms = bodypart_forearms
+        preferences.bodypart_neck = bodypart_neck
+        preferences.bodypart_shoulders = bodypart_shoulders
+        preferences.bodypart_triceps = bodypart_triceps
+        preferences.level_beginner = level_beginner
+        preferences.level_expert = level_expert
+        preferences.level_intermediate = level_intermediate
+        preferences.equipment_gym = equipment_gym
+        preferences.equipment_body_only = equipment_body_only
+        preferences.bodypart_legs = bodypart_legs
+        preferences.bodypart_back = bodypart_back
+        preferences.bodypart_fullbody = bodypart_fullbody
+    else:
+        preferences = ExercisePreferences(
+            user_id=user_id,
+            type_cardio=type_cardio,
+            type_strength=type_strength,
+            type_stretching=type_stretching,
+            bodypart_abdominals = bodypart_abdominals,
+            bodypart_biceps = bodypart_biceps,
+            bodypart_chest = bodypart_chest,
+            bodypart_forearms = bodypart_forearms,
+            bodypart_neck = bodypart_neck,
+            bodypart_shoulders = bodypart_shoulders,
+            bodypart_triceps = bodypart_triceps,
+            level_beginner = level_beginner,
+            level_expert = level_expert,
+            level_intermediate = level_intermediate,
+            equipment_gym = equipment_gym,
+            equipment_body_only = equipment_body_only,
+            bodypart_legs = bodypart_legs,
+            bodypart_back = bodypart_back,
+            bodypart_fullbody=bodypart_fullbody
+        )
+        db.add(preferences)
+
+    db.commit()
+    return {"message": "Exercise preferences updated successfully."}
+
+
+@app.get("/exercise/preferences")
+async def get_exercise_preferences(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    preferences = db.query(ExercisePreferences).filter(ExercisePreferences.user_id == user_id).all()
+
+    if preferences:
+        return preferences[0].to_dict()
+    else:
+        return {"message": "No preferences set"}, 404
+
+@app.get("/exercise/recommendations/history")
+async def get_exercise_history(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    history = db.query(ExerciseHistory).filter(ExerciseHistory.user_id == user_id).all()
+
+    exercise_ids = []
+    for history_item in history[-5:]:
+        history_item_dict = history_item.to_dict()
+        exercise_ids.append(history_item_dict["exercise_id"])
+
+    return app.state.workout_recommender.get_recommendations_for_selected_indices(exercise_ids, 5)
+
+
+@app.get("/exercise/recommendations/preferences")
+async def get_exercise_history(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    preferences = db.query(ExercisePreferences).filter(ExercisePreferences.user_id == user_id).all()
+
+    if preferences:
+        return app.state.workout_recommender.get_recommendations(preferences[0].to_dict()["preferences"], 10)
+    else:
+        return {"message": "No preferences set"}, 404
 
 
 @app.post("/food/log")
