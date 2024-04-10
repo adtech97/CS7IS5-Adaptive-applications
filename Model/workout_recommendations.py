@@ -76,9 +76,9 @@ class WorkoutRecommendations:
         transformed_records = []
         for record in data:
             new_record = {
-                'Title': record['Title'],
-                'Desc': record['Desc'],
-                'Dataset Index': record['Unnamed: 0'],  # Including the 'Unnamed: 0' column value.
+                'title': record['Title'],
+                'desc': record['Desc'],
+                'exercise_id': record['Unnamed: 0'],  # Including the 'Unnamed: 0' column value.
                 'encoded_values': {key: int(value) for key, value in record.items() if
                                    key not in ['Title', 'Desc', 'Cosine_Similarity', 'Unnamed: 0']}
             }
@@ -104,7 +104,7 @@ class WorkoutRecommendations:
         """
         encoded_vectors = []
         for index in selected_dataset_indices:
-            record = self.workout_details(index)
+            record = self.data_encoded[self.data_encoded["Unnamed: 0"] == index].to_dict(orient='records')[0]
             encodings = {key: int(value) for key, value in record.items() if
                          key not in ['Title', 'Desc', 'Cosine_Similarity', 'Unnamed: 0']}
             encoded_vectors.append(encodings)
@@ -119,7 +119,26 @@ class WorkoutRecommendations:
         return results
 
     def workout_details(self, dataset_index):
-        return self.data_encoded[self.data_encoded["Unnamed: 0"] == dataset_index].to_dict(orient='records')[0]
+        record = self.data_encoded[self.data_encoded["Unnamed: 0"] == dataset_index].to_dict(orient='records')[0]
+        new_record = {
+            'title': record['Title'],
+            'desc': record['Desc'],
+            'exercise_id': record['Unnamed: 0'],  # Including the 'Unnamed: 0' column value.
+            'encoded_values': {key: int(value) for key, value in record.items() if
+                               key not in ['Title', 'Desc', 'Cosine_Similarity', 'Unnamed: 0']}
+        }
+        if record.get('Type_Strength') == 1:
+            if record.get('Level_Beginner') == 1:
+                new_record['reps'] = '7-10'
+                new_record['sets'] = '2-3'
+            elif record.get('Level_Expert') == 1:
+                new_record['reps'] = '8-12'
+                new_record['sets'] = '3-4'
+            elif record.get('Level_Intermediate') == 1:
+                new_record['reps'] = '10-14'
+                new_record['sets'] = '4-5'
+
+        return new_record
 
 
 def _get_unique_dicts(dicts):

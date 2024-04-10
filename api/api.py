@@ -12,6 +12,7 @@ from database.models import User, ExerciseHistory, FoodHistory
 
 app = FastAPI()
 
+
 async def get_current_user_id(token: str = Security(utils.oauth2_scheme)):
     try:
         payload = jwt.decode(token, utils.SECRET_KEY, algorithms=[utils.ALGORITHM])
@@ -91,6 +92,68 @@ async def log_exercise(
     return {"message": "Exercise logged successfully."}
 
 
+@app.get("/exercise/history")
+async def get_exercise_history(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    history = db.query(ExerciseHistory).filter(ExerciseHistory.user_id == user_id).all()
+
+    ret_data = []
+    for history_item in history:
+        history_item_dict =  history_item.to_dict()
+        history_item_dict["details"] = app.state.workout_recommender.workout_details(history_item_dict["exercise_id"])
+        ret_data.append(history_item_dict)
+
+    return ret_data
+
+
+@app.get("/exercise/details/{exercise_id}")
+async def get_exercise_history(exercise_id: int, user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    return  app.state.workout_recommender.workout_details(exercise_id)
+
+
+@app.post("/exercise/search")
+async def search_exercise(
+        type_cardio: int = Form(...),
+        type_strength: int = Form(...),
+        type_stretching: int = Form(...),
+        bodypart_abdominals: int = Form(...),
+        bodypart_biceps: int = Form(...),
+        bodypart_chest: int = Form(...),
+        bodypart_forearms: int = Form(...),
+        bodypart_neck: int = Form(...),
+        bodypart_shoulders: int = Form(...),
+        bodypart_triceps: int = Form(...),
+        level_beginner: int = Form(...),
+        level_expert: int = Form(...),
+        level_intermediate: int = Form(...),
+        equipment_gym: int = Form(...),
+        equipment_body_only: int = Form(...),
+        bodypart_legs: int = Form(...),
+        bodypart_back: int = Form(...),
+        bodypart_fullbody: int = Form(...),
+        user_id: int = Depends(get_current_user_id)):
+
+    return app.state.workout_recommender.get_recommendations({
+        "Type_Cardio": type_cardio,
+        "Type_Strength": type_strength,
+        "Type_Stretching": type_stretching,
+        "BodyPart_Abdominals": bodypart_abdominals,
+        "BodyPart_Biceps": bodypart_biceps,
+        "BodyPart_Chest": bodypart_chest,
+        "BodyPart_Forearms": bodypart_forearms,
+        "BodyPart_Neck": bodypart_neck,
+        "BodyPart_Shoulders": bodypart_shoulders,
+        "BodyPart_Triceps": bodypart_triceps,
+        "Level_Beginner": level_beginner,
+        "Level_Expert": level_expert,
+        "Level_Intermediate": level_intermediate,
+        "Equipment_Gym": equipment_gym,
+        "Equipment_Body_Only": equipment_body_only,
+        "BodyPart_Legs": bodypart_legs,
+        "BodyPart_Back": bodypart_back,
+        "BodyPart_FullBody": bodypart_fullbody
+    }, 10)
+
+
 @app.post("/food/log")
 async def log_food(
     food_id: int = Form(...),
@@ -104,19 +167,6 @@ async def log_food(
     db.add(new_entry)
     db.commit()
     return {"message": "Food logged successfully."}
-
-
-@app.get("/exercise/history")
-async def get_exercise_history(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
-    history = db.query(ExerciseHistory).filter(ExerciseHistory.user_id == user_id).all()
-
-    ret_data = []
-    for history_item in history:
-        history_item_dict =  history_item.to_dict()
-        history_item_dict["details"] = app.state.workout_recommender.workout_details(history_item_dict["exercise_id"])
-        ret_data.append(history_item_dict)
-
-    return ret_data
 
 
 @app.get("/food/history")
