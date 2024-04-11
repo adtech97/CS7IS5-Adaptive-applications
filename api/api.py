@@ -234,10 +234,10 @@ async def get_exercise_preferences(user_id: int = Depends(get_current_user_id), 
     if preferences:
         return preferences[0].to_dict()
     else:
-        return {"message": "No preferences set"}, 404
+        raise HTTPException(status_code=404, detail="No exercise preferences set")
 
 @app.get("/exercise/recommendations/history")
-async def get_exercise_history(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+async def get_exercise_recommendations_history(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
     history = db.query(ExerciseHistory).filter(ExerciseHistory.user_id == user_id).all()
 
     exercise_ids = []
@@ -249,13 +249,13 @@ async def get_exercise_history(user_id: int = Depends(get_current_user_id), db: 
 
 
 @app.get("/exercise/recommendations/preferences")
-async def get_exercise_history(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+async def get_exercise_recommendations_preferences(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
     preferences = db.query(ExercisePreferences).filter(ExercisePreferences.user_id == user_id).all()
 
     if preferences:
         return app.state.workout_recommender.get_recommendations(preferences[0].to_dict()["preferences"], 10)
     else:
-        return {"message": "No preferences set"}, 404
+        raise HTTPException(status_code=404, detail="No exercise preferences set")
 
 
 @app.post("/food/log")
