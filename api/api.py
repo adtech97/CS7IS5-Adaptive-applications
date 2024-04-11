@@ -229,10 +229,10 @@ async def set_exercise_preferences(
 
 @app.get("/exercise/preferences")
 async def get_exercise_preferences(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
-    preferences = db.query(ExercisePreferences).filter(ExercisePreferences.user_id == user_id).all()
+    preferences = db.query(ExercisePreferences).filter(ExercisePreferences.user_id == user_id).first()
 
     if preferences:
-        return preferences[0].to_dict()
+        return preferences.to_dict()
     else:
         raise HTTPException(status_code=404, detail="No exercise preferences set")
 
@@ -250,10 +250,10 @@ async def get_exercise_recommendations_history(user_id: int = Depends(get_curren
 
 @app.get("/exercise/recommendations/preferences")
 async def get_exercise_recommendations_preferences(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
-    preferences = db.query(ExercisePreferences).filter(ExercisePreferences.user_id == user_id).all()
+    preferences = db.query(ExercisePreferences).filter(ExercisePreferences.user_id == user_id).first()
 
     if preferences:
-        return app.state.workout_recommender.get_recommendations(preferences[0].to_dict()["preferences"], 10)
+        return app.state.workout_recommender.get_recommendations(preferences.to_dict()["preferences"], 10)
     else:
         raise HTTPException(status_code=404, detail="No exercise preferences set")
 
