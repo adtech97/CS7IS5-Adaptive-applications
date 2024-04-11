@@ -67,24 +67,24 @@ class ExercisePreferences(Base):
         return {
             "user_id": self.user_id,
             "preferences": {
-                "type_cardio": self.type_cardio,
-                "type_strength": self.type_strength,
-                "type_stretching": self.type_stretching,
-                "bodypart_abdominals": self.bodypart_abdominals,
-                "bodypart_biceps": self.bodypart_biceps,
-                "bodypart_chest": self.bodypart_chest,
-                "bodypart_forearms": self.bodypart_forearms,
-                "bodypart_neck": self.bodypart_neck,
-                "bodypart_shoulders": self.bodypart_shoulders,
-                "bodypart_triceps": self.bodypart_triceps,
-                "level_beginner": self.level_beginner,
-                "level_expert": self.level_expert,
-                "level_intermediate": self.level_intermediate,
-                "equipment_gym": self.equipment_gym,
-                "equipment_body_only": self.equipment_body_only,
-                "bodypart_legs": self.bodypart_legs,
-                "bodypart_back": self.bodypart_back,
-                "bodypart_fullbody": self.bodypart_fullbody
+                "Type_Cardio": self.type_cardio,
+                "Type_Strength": self.type_strength,
+                "Type_Stretching": self.type_stretching,
+                "BodyPart_Abdominals": self.bodypart_abdominals,
+                "BodyPart_Biceps": self.bodypart_biceps,
+                "BodyPart_Chest": self.bodypart_chest,
+                "BodyPart_Forearms": self.bodypart_forearms,
+                "BodyPart_Neck": self.bodypart_neck,
+                "BodyPart_Shoulders": self.bodypart_shoulders,
+                "BodyPart_Triceps": self.bodypart_triceps,
+                "Level_Beginner": self.level_beginner,
+                "Level_Expert": self.level_expert,
+                "Level_Intermediate": self.level_intermediate,
+                "Equipment_Gym": self.equipment_gym,
+                "Equipment_Body_Only": self.equipment_body_only,
+                "BodyPart_Legs": self.bodypart_legs,
+                "BodyPart_Back": self.bodypart_back,
+                "BodyPart_FullBody": self.bodypart_fullbody
             }
         }
 
