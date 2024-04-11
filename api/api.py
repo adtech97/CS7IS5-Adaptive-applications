@@ -9,9 +9,16 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from database.db import SessionLocal
 from database.models import User, ExerciseHistory, FoodHistory, ExercisePreferences
-
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 async def get_current_user_id(token: str = Security(utils.oauth2_scheme)):
     try:
