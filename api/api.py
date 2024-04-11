@@ -112,68 +112,68 @@ async def get_exercise_history(exercise_id: int, user_id: int = Depends(get_curr
 
 @app.post("/exercise/search")
 async def search_exercise(
-        type_cardio: int = Form(...),
-        type_strength: int = Form(...),
-        type_stretching: int = Form(...),
-        bodypart_abdominals: int = Form(...),
-        bodypart_biceps: int = Form(...),
-        bodypart_chest: int = Form(...),
-        bodypart_forearms: int = Form(...),
-        bodypart_neck: int = Form(...),
-        bodypart_shoulders: int = Form(...),
-        bodypart_triceps: int = Form(...),
-        level_beginner: int = Form(...),
-        level_expert: int = Form(...),
-        level_intermediate: int = Form(...),
-        equipment_gym: int = Form(...),
-        equipment_body_only: int = Form(...),
-        bodypart_legs: int = Form(...),
-        bodypart_back: int = Form(...),
-        bodypart_fullbody: int = Form(...)
+        Type_Cardio: int = Form(...),
+        Type_Strength: int = Form(...),
+        Type_Stretching: int = Form(...),
+        BodyPart_Abdominals: int = Form(...),
+        BodyPart_Biceps: int = Form(...),
+        BodyPart_Chest: int = Form(...),
+        BodyPart_Forearms: int = Form(...),
+        BodyPart_Neck: int = Form(...),
+        BodyPart_Shoulders: int = Form(...),
+        BodyPart_Triceps: int = Form(...),
+        Level_Beginner: int = Form(...),
+        Level_Expert: int = Form(...),
+        Level_Intermediate: int = Form(...),
+        Equipment_Gym: int = Form(...),
+        Equipment_Body_Only: int = Form(...),
+        BodyPart_Legs: int = Form(...),
+        BodyPart_Back: int = Form(...),
+        BodyPart_FullBody: int = Form(...),
 ):
 
     return app.state.workout_recommender.get_recommendations({
-        "type_cardio": type_cardio,
-        "type_strength": type_strength,
-        "type_stretching": type_stretching,
-        "bodypart_abdominals": bodypart_abdominals,
-        "bodypart_biceps": bodypart_biceps,
-        "bodypart_chest": bodypart_chest,
-        "bodypart_forearms": bodypart_forearms,
-        "bodypart_neck": bodypart_neck,
-        "bodypart_shoulders": bodypart_shoulders,
-        "bodypart_triceps": bodypart_triceps,
-        "level_beginner": level_beginner,
-        "level_expert": level_expert,
-        "level_intermediate": level_intermediate,
-        "equipment_gym": equipment_gym,
-        "equipment_body_only": equipment_body_only,
-        "bodypart_legs": bodypart_legs,
-        "bodypart_back": bodypart_back,
-        "bodypart_fullbody": bodypart_fullbody
+        "type_cardio": Type_Cardio,
+        "type_strength": Type_Strength,
+        "type_stretching": Type_Stretching,
+        "bodypart_abdominals": BodyPart_Abdominals,
+        "bodypart_biceps": BodyPart_Biceps,
+        "bodypart_chest": BodyPart_Chest,
+        "bodypart_forearms": BodyPart_Forearms,
+        "bodypart_neck": BodyPart_Neck,
+        "bodypart_shoulders": BodyPart_Shoulders,
+        "bodypart_triceps": BodyPart_Triceps,
+        "level_beginner": Level_Beginner,
+        "level_expert": Level_Expert,
+        "level_intermediate": Level_Intermediate,
+        "equipment_gym": Equipment_Gym,
+        "equipment_body_only": Equipment_Body_Only,
+        "bodypart_legs": BodyPart_Legs,
+        "bodypart_back": BodyPart_Back,
+        "bodypart_fullbody": BodyPart_FullBody
     }, 10)
 
 
 @app.post("/exercise/preferences")
 async def set_exercise_preferences(
-        type_cardio: int = Form(...),
-        type_strength: int = Form(...),
-        type_stretching: int = Form(...),
-        bodypart_abdominals: int = Form(...),
-        bodypart_biceps: int = Form(...),
-        bodypart_chest: int = Form(...),
-        bodypart_forearms: int = Form(...),
-        bodypart_neck: int = Form(...),
-        bodypart_shoulders: int = Form(...),
-        bodypart_triceps: int = Form(...),
-        level_beginner: int = Form(...),
-        level_expert: int = Form(...),
-        level_intermediate: int = Form(...),
-        equipment_gym: int = Form(...),
-        equipment_body_only: int = Form(...),
-        bodypart_legs: int = Form(...),
-        bodypart_back: int = Form(...),
-        bodypart_fullbody: int = Form(...),
+        Type_Cardio: int = Form(...),
+        Type_Strength: int = Form(...),
+        Type_Stretching: int = Form(...),
+        BodyPart_Abdominals: int = Form(...),
+        BodyPart_Biceps: int = Form(...),
+        BodyPart_Chest: int = Form(...),
+        BodyPart_Forearms: int = Form(...),
+        BodyPart_Neck: int = Form(...),
+        BodyPart_Shoulders: int = Form(...),
+        BodyPart_Triceps: int = Form(...),
+        Level_Beginner: int = Form(...),
+        Level_Expert: int = Form(...),
+        Level_Intermediate: int = Form(...),
+        Equipment_Gym: int = Form(...),
+        Equipment_Body_Only: int = Form(...),
+        BodyPart_Legs: int = Form(...),
+        BodyPart_Back: int = Form(...),
+        BodyPart_FullBody: int = Form(...),
         user_id: int = Depends(get_current_user_id),
         db: Session = Depends(get_db)
 ):
@@ -181,45 +181,45 @@ async def set_exercise_preferences(
     preferences = db.query(ExercisePreferences).filter(ExercisePreferences.user_id == user_id).first()
 
     if preferences:
-        preferences.type_cardio = type_cardio
-        preferences.type_strength = type_strength
-        preferences.type_stretching = type_stretching
-        preferences.bodypart_abdominals = bodypart_abdominals
-        preferences.bodypart_biceps = bodypart_biceps
-        preferences.bodypart_chest = bodypart_chest
-        preferences.bodypart_forearms = bodypart_forearms
-        preferences.bodypart_neck = bodypart_neck
-        preferences.bodypart_shoulders = bodypart_shoulders
-        preferences.bodypart_triceps = bodypart_triceps
-        preferences.level_beginner = level_beginner
-        preferences.level_expert = level_expert
-        preferences.level_intermediate = level_intermediate
-        preferences.equipment_gym = equipment_gym
-        preferences.equipment_body_only = equipment_body_only
-        preferences.bodypart_legs = bodypart_legs
-        preferences.bodypart_back = bodypart_back
-        preferences.bodypart_fullbody = bodypart_fullbody
+        preferences.type_cardio = Type_Cardio
+        preferences.type_strength = Type_Strength
+        preferences.type_stretching = Type_Stretching
+        preferences.bodypart_abdominals = BodyPart_Abdominals
+        preferences.bodypart_biceps = BodyPart_Biceps
+        preferences.bodypart_chest = BodyPart_Chest
+        preferences.bodypart_forearms = BodyPart_Forearms
+        preferences.bodypart_neck = BodyPart_Neck
+        preferences.bodypart_shoulders = BodyPart_Shoulders
+        preferences.bodypart_triceps = BodyPart_Triceps
+        preferences.level_beginner = Level_Beginner
+        preferences.level_expert = Level_Expert
+        preferences.level_intermediate = Level_Intermediate
+        preferences.equipment_gym = Equipment_Gym
+        preferences.equipment_body_only = Equipment_Body_Only
+        preferences.bodypart_legs = BodyPart_Legs
+        preferences.bodypart_back = BodyPart_Back
+        preferences.bodypart_fullbody = BodyPart_FullBody
     else:
         preferences = ExercisePreferences(
             user_id=user_id,
-            type_cardio=type_cardio,
-            type_strength=type_strength,
-            type_stretching=type_stretching,
-            bodypart_abdominals = bodypart_abdominals,
-            bodypart_biceps = bodypart_biceps,
-            bodypart_chest = bodypart_chest,
-            bodypart_forearms = bodypart_forearms,
-            bodypart_neck = bodypart_neck,
-            bodypart_shoulders = bodypart_shoulders,
-            bodypart_triceps = bodypart_triceps,
-            level_beginner = level_beginner,
-            level_expert = level_expert,
-            level_intermediate = level_intermediate,
-            equipment_gym = equipment_gym,
-            equipment_body_only = equipment_body_only,
-            bodypart_legs = bodypart_legs,
-            bodypart_back = bodypart_back,
-            bodypart_fullbody=bodypart_fullbody
+            type_cardio=Type_Cardio,
+            type_strength=Type_Strength,
+            type_stretching=Type_Stretching,
+            bodypart_abdominals = BodyPart_Abdominals,
+            bodypart_biceps = BodyPart_Biceps,
+            bodypart_chest = BodyPart_Chest,
+            bodypart_forearms = BodyPart_Forearms,
+            bodypart_neck = BodyPart_Neck,
+            bodypart_shoulders = BodyPart_Shoulders,
+            bodypart_triceps = BodyPart_Triceps,
+            level_beginner = Level_Beginner,
+            level_expert = Level_Expert,
+            level_intermediate = Level_Intermediate,
+            equipment_gym = Equipment_Gym,
+            equipment_body_only = Equipment_Body_Only,
+            bodypart_legs = BodyPart_Legs,
+            bodypart_back = BodyPart_Back,
+            bodypart_fullbody=BodyPart_FullBody
         )
         db.add(preferences)
 
