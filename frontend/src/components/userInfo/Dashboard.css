@@ -1,0 +1,66 @@
+
+.workoutIcon {
+    grid-area: workoutIcon;
+    /*background-image: url('assets/workout_icon.svg'); !* Replace with your image path *!*/
+    /*background-size: cover;*/
+    background-color: #87B5DF
+}
+
+.mealIcon {
+    grid-area: mealIcon;
+    /*background-image: url('assets/food_icon.png'); !* Replace with your image path *!*/
+    /*background-size: cover;*/
+    background-color: #BEDF87
+}
+
+.UserIcon {
+    grid-area: UserIcon;
+    /*background-image: url('assets/user_icon.png'); !* Replace with your image path *!*/
+    /*background-size: cover;*/
+    background-color: #E1E6DA
+}
+
+.restArea {
+    grid-area: restArea;
+    /* Add any styling for the rest area here */
+}
+
+.workoutIcon, .mealIcon, .UserIcon, .restArea {
+    border: 1px solid black;
+    min-height: 150px;
+}
+
+html, body {
+    height: 100%;
+    margin: 0; /* Remove default margin */
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1.1fr 1.2fr 0.7fr;
+    grid-template-rows: 0.4fr 1.6fr;
+    gap: 0px 0px;
+    grid-template-areas:
+            "workoutIcon mealIcon UserIcon"
+            "restArea restArea restArea";
+    width: 100%;
+    height: 95%; /* This will be relative to the parent's height */
+
+}
+
+.iconImage {
+    width: 10vw; /* 10% of the viewport width */
+    height: auto; /* maintain aspect ratio */
+}
+
+.workoutIcon, .mealIcon, .UserIcon {
+    display: flex;
+    align-items: center; /* Vertically center the content within the container */
+    justify-content: space-between;
+    /*justify-content: center; !* Center the content horizontally if needed *!*/
+    padding: 0 20px;
+}
+
+.container span {
+    font-size: 50px; /* Increase the font size as needed */
+}

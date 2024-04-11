@@ -1,0 +1,56 @@
+/* WorkoutList.css */
+.workout-header {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.workout-item {
+    background-color: #E0E0E0; /* Gray background */
+    padding: 30px; /* Increase padding to make the panel larger */
+    margin: 15px 10px; /* Add top and bottom margin for space between items and left-right margin for white space */
+    cursor: pointer;
+    display: flex;
+    align-items: center; /* Center the content vertically */
+    justify-content: space-between; /* Spread the content out from left to right */
+}
+
+.workout-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.workout-popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    /* Add more styling as needed */
+}
+
+.workout-name {
+    font-size: 24px;
+}
+
+.workout-list-container {
+    max-height: 400px; /* Set a maximum height to whatever suits your design */
+    overflow-y: auto; /* Enables vertical scrolling */
+    padding: 16px; /* Optional: Add padding if needed */
+    margin: 16px 0; /* Optional: Add margin around the container if needed */
+}
+
+.workout-equip-img {
+    width: 50px; /* Or the size you prefer */
+    height: 50px; /* Maintain the aspect ratio if desired */
+    margin-right: 10px; /* Space between the image and the text */
+    /* Add additional styling as needed */
+}
+

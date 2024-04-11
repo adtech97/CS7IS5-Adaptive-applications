@@ -1,0 +1,80 @@
+form {
+    max-width: 500px; /* Set form max width */
+    margin: 20px auto; /* Center the form */
+    padding: 20px;
+    background: #f9f9f9; /* Light background for the form */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+}
+
+h2 {
+    color: #333; /* Dark text for headings */
+    margin-bottom: 15px; /* Space below headings */
+}
+
+div {
+    margin-bottom: 10px; /* Space between form groups */
+}
+
+input[type="checkbox"] {
+    margin-right: 10px; /* Space between checkbox and label */
+}
+
+input[type="text"] {
+    width: 100%; /* Full width input */
+    padding: 8px; /* Padding inside input */
+    margin-top: 5px; /* Space above input */
+    border: 1px solid #ddd; /* Light border for the input */
+    border-radius: 4px; /* Rounded corners for the input */
+    box-sizing: border-box; /* Ensure padding does not affect width */
+}
+
+button {
+    display: block; /* Ensure button takes its own line */
+    width: 100%; /* Full width button */
+    padding: 10px; /* Padding inside button */
+    margin-top: 20px; /* Space above the button */
+    background-color: #007BFF; /* Button color */
+    color: white; /* Text color */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners for the button */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Larger font size for button text */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darken button color on hover */
+}
+
+.user-profile-container {
+    display: flex;
+    justify-content: space-between; /* Adjust as necessary */
+    padding: 20px;
+}
+
+.profile-column {
+    flex: 1;
+    margin-right: 20px; /* Add space between the columns */
+}
+
+.history-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.scrollable-list {
+    max-height: 300px; /* Adjust as necessary */
+    overflow-y: auto;
+    margin-bottom: 20px; /* Space between the lists */
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.user-info-list {
+    max-height: 350px; /* Adjust based on your needs */
+    overflow-y: auto; /* Enables vertical scrolling */
+    padding: 10px;
+    border: 1px solid #ccc; /* Optional, for visual structure */
+    margin-bottom: 20px; /* Spacing below the list */
+}

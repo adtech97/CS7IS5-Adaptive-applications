@@ -2,7 +2,6 @@
 import React from "react";
 import axios from "axios";
 import loginImg from "../../login.svg";
-import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 
 export class Login extends React.Component {
   constructor(props) {
@@ -21,6 +20,7 @@ export class Login extends React.Component {
 
   handleLogin = async () => {
     try {
+      
       const fromData = new FormData();
       fromData.append("username", this.state.username);
       fromData.append("password", this.state.password);
@@ -35,7 +35,7 @@ export class Login extends React.Component {
   }
 
   render() {
-    return (
+      return (
       <div className="base-container" ref={this.props.containerRef}>
         <div className="header">Login</div>
         <div className="content">

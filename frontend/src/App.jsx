@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.scss";
 import { Login, Register } from "./components/login/index";
+import UserInfo from "./components/userInfo/UserInfo";
 
 class App extends React.Component {
   constructor(props) {
@@ -12,7 +13,9 @@ class App extends React.Component {
 
   componentDidMount() {
     //Add .right by default
+    if (this.container) {
     this.rightSide.classList.add("right");
+    }
   }
 
   changeState() {
@@ -28,7 +31,18 @@ class App extends React.Component {
     this.setState(prevState => ({ isLogginActive: !prevState.isLogginActive }));
   }
 
+  navigateToDetails = (section) => {
+  
+    
+    console.log("Navigating to details section:", section);
+  };
+
+
   render() {
+    if (document.cookie.includes('authToken')) {
+      return <UserInfo navigateToDetails={this.navigateToDetails}/>;
+    }
+
     const { isLogginActive } = this.state;
     const current = isLogginActive ? "Register" : "Login";
     const currentActive = isLogginActive ? "login" : "register";
@@ -70,3 +84,4 @@ const RightSide = props => {
 };
 
 export default App;
+

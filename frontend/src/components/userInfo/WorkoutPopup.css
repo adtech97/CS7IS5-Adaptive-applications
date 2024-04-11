@@ -1,0 +1,89 @@
+.workout-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10; /* Ensure it's above other content */
+}
+
+.workout-popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 500px; /* Adjust as needed */
+    width: 100%;
+}
+
+.workout-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/*.back-button {*/
+/*    font-size: 14px; !* Decrease font size *!*/
+/*    padding: 5px 5px; !* Reduce padding to make the button smaller *!*/
+/*    margin-right: 30px; !* Optional: Add some margin if needed *!*/
+/*    cursor: pointer; !* Change cursor to pointer to indicate it's clickable *!*/
+/*    border: 1px solid #ccc; !* Optional: Add a border to define the button *!*/
+/*    border-radius: 5px; !* Optional: Round the corners of the button *!*/
+/*    background-color: #f0f0f0; !* Optional: Change background color *!*/
+/*}*/
+
+.workout-info {
+    display: flex;
+    justify-content: space-around; /* Adjust as needed */
+    align-items: center;
+    width: 100%;
+}
+
+.workout-icon {
+    /* Add styles for your workout icon here */
+}
+
+.workout-type, .workout-bodypart {
+    margin: 0 10px;
+}
+
+.workout-title {
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.workout-description {
+    font-size: 16px;
+    margin-bottom: 24px;
+}
+
+.complete-button {
+    padding: 10px 20px;
+    border: none;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    /* Add more button styling as needed */
+}
+
+.iconImage {
+    width: 5vw; /* 10% of the viewport width */
+    height: auto; /* maintain aspect ratio */
+    margin-right: 5px;
+}
+
+.container span {
+    font-size: 30px; /* Increase the font size as needed */
+}
+
+.workout-equipment, .workout-bodypart-container {
+    display: flex;
+    align-items: center; /* Align the image and text vertically */
+    margin-right: 10px; /* Space between the two sets of image and text */
+}
