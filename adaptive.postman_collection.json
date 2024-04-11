@@ -143,6 +143,42 @@
 			"response": []
 		},
 		{
+			"name": "food history",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:8080/food/history",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"food",
+						"history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "food details",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -180,42 +216,6 @@
 						"food",
 						"details",
 						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "food history",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": []
-				},
-				"url": {
-					"raw": "localhost:8080/food/history",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"food",
-						"history"
 					]
 				}
 			},
@@ -315,106 +315,106 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "type_cardio",
+							"key": "Type_Cardio",
 							"value": "1",
 							"type": "text"
 						},
 						{
-							"key": "type_strength",
+							"key": "Type_Strength",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "type_stretching",
+							"key": "Type_Stretching",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "bodypart_abdominals",
+							"key": "BodyPart_Abdominals",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "bodypart_biceps",
+							"key": "BodyPart_Biceps",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "bodypart_chest",
+							"key": "BodyPart_Chest",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "bodypart_forearms",
+							"key": "BodyPart_Forearms",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "bodypart_neck",
+							"key": "BodyPart_Neck",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "bodypart_shoulders",
+							"key": "BodyPart_Shoulders",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "bodypart_triceps",
+							"key": "BodyPart_Triceps",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "level_beginner",
+							"key": "Level_Beginner",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "level_expert",
+							"key": "Level_Expert",
 							"value": "1",
 							"type": "text"
 						},
 						{
-							"key": "level_intermediate",
+							"key": "Level_Intermediate",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "equipment_gym",
+							"key": "Equipment_Gym",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "equipment_body_only",
+							"key": "Equipment_Body_Only",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "bodypart_legs",
+							"key": "BodyPart_Legs",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "bodypart_back",
+							"key": "BodyPart_Back",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "bodypart_fullbody",
+							"key": "BodyPart_FullBody",
 							"value": "0",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:8080/exercise/preferences",
+					"raw": "localhost:8080/exercise/search",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"exercise",
-						"preferences"
+						"search"
 					]
 				}
 			},
@@ -475,106 +475,106 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "type_cardio",
+							"key": "Type_Cardio",
 							"value": "1",
 							"type": "text"
 						},
 						{
-							"key": "type_strength",
-							"value": "0",
-							"type": "text"
-						},
-						{
-							"key": "type_stretching",
-							"value": "0",
-							"type": "text"
-						},
-						{
-							"key": "bodypart_abdominals",
-							"value": "0",
-							"type": "text"
-						},
-						{
-							"key": "bodypart_biceps",
-							"value": "0",
-							"type": "text"
-						},
-						{
-							"key": "bodypart_chest",
-							"value": "0",
-							"type": "text"
-						},
-						{
-							"key": "bodypart_forearms",
-							"value": "0",
-							"type": "text"
-						},
-						{
-							"key": "bodypart_neck",
-							"value": "0",
-							"type": "text"
-						},
-						{
-							"key": "bodypart_shoulders",
-							"value": "0",
-							"type": "text"
-						},
-						{
-							"key": "bodypart_triceps",
-							"value": "0",
-							"type": "text"
-						},
-						{
-							"key": "level_beginner",
-							"value": "0",
-							"type": "text"
-						},
-						{
-							"key": "level_expert",
+							"key": "Type_Strength",
 							"value": "1",
 							"type": "text"
 						},
 						{
-							"key": "level_intermediate",
+							"key": "Type_Stretching",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "equipment_gym",
+							"key": "BodyPart_Abdominals",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "equipment_body_only",
+							"key": "BodyPart_Biceps",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "bodypart_legs",
+							"key": "BodyPart_Chest",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "bodypart_back",
+							"key": "BodyPart_Forearms",
 							"value": "0",
 							"type": "text"
 						},
 						{
-							"key": "bodypart_fullbody",
+							"key": "BodyPart_Neck",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "BodyPart_Shoulders",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "BodyPart_Triceps",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "Level_Beginner",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "Level_Expert",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "Level_Intermediate",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "Equipment_Gym",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "Equipment_Body_Only",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "BodyPart_Legs",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "BodyPart_Back",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "BodyPart_FullBody",
 							"value": "0",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:8080/exercise/search",
+					"raw": "localhost:8080/exercise/preferences",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"exercise",
-						"search"
+						"preferences"
 					]
 				}
 			},
