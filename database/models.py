@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float
 from sqlalchemy.orm import relationship
 
 from datetime import datetime
@@ -17,6 +17,7 @@ class User(Base):
     exercise_history = relationship("ExerciseHistory", backref="user")
     food_history = relationship("FoodHistory", backref="user")
     exercise_preferences = relationship("ExercisePreferences", back_populates="user", uselist=False)
+    food_preferences = relationship("FoodPreferences", back_populates="user", uselist=False)
 
 
 class ExerciseHistory(Base):
@@ -104,3 +105,43 @@ class FoodHistory(Base):
                 "user_id": self.user_id,
                 "timestamp": self.timestamp
             }
+
+
+class FoodPreferences(Base):
+    __tablename__ = 'food_preferences'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))  # Foreign Key to link to User
+    calories = Column(Float)
+    fat_content = Column(Float)
+    saturated_fat_content = Column(Float)
+    cholesterol_content = Column(Float)
+    sodium_content = Column(Float)
+    carbohydrate_content = Column(Float)
+    fiber_content = Column(Float)
+    sugar_content = Column(Float)
+    protein_content = Column(Float)
+    allergies = Column(String)
+    max_time = Column(Float)
+
+    user = relationship("User", back_populates="food_preferences")
+
+    def to_dict(self):
+        return {
+            "user_id": self.user_id,
+            "preferences": {
+                'Calories': self.calories,
+                'FatContent': self.fat_content,
+                'SaturatedFatContent': self.saturated_fat_content,
+                'CholesterolContent': self.cholesterol_content,
+                'SodiumContent': self.sodium_content,
+                'CarbohydrateContent': self.carbohydrate_content,
+                'FiberContent': self.fiber_content,
+                'SugarContent': self.sugar_content,
+                'ProteinContent': self.protein_content
+            },
+            "filters": {
+                "Allergies": self.allergies,
+                "MaxTime": self.max_time,
+            }
+        }

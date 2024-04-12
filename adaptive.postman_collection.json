@@ -179,6 +179,257 @@
 			"response": []
 		},
 		{
+			"name": "food search",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Calories",
+							"value": "500",
+							"type": "text"
+						},
+						{
+							"key": "FatContent",
+							"value": "20",
+							"type": "text"
+						},
+						{
+							"key": "SaturatedFatContent",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "CholesterolContent",
+							"value": "30",
+							"type": "text"
+						},
+						{
+							"key": "SodiumContent",
+							"value": "200",
+							"type": "text"
+						},
+						{
+							"key": "CarbohydrateContent",
+							"value": "50",
+							"type": "text"
+						},
+						{
+							"key": "FiberContent",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "SugarContent",
+							"value": "8",
+							"type": "text"
+						},
+						{
+							"key": "ProteinContent",
+							"value": "25",
+							"type": "text"
+						},
+						{
+							"key": "Allergies",
+							"value": "ginger",
+							"type": "text"
+						},
+						{
+							"key": "MaxTime",
+							"value": "30",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/food/search",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"food",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "food preferences",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:8080/food/preferences",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"food",
+						"preferences"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "food preferences",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Calories",
+							"value": "500",
+							"type": "text"
+						},
+						{
+							"key": "FatContent",
+							"value": "20",
+							"type": "text"
+						},
+						{
+							"key": "SaturatedFatContent",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "CholesterolContent",
+							"value": "30",
+							"type": "text"
+						},
+						{
+							"key": "SodiumContent",
+							"value": "200",
+							"type": "text"
+						},
+						{
+							"key": "CarbohydrateContent",
+							"value": "50",
+							"type": "text"
+						},
+						{
+							"key": "FiberContent",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "SugarContent",
+							"value": "8",
+							"type": "text"
+						},
+						{
+							"key": "ProteinContent",
+							"value": "25",
+							"type": "text"
+						},
+						{
+							"key": "Allergies",
+							"value": "ginger,cashew",
+							"type": "text"
+						},
+						{
+							"key": "MaxTime",
+							"value": "30",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/food/preferences",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"food",
+						"preferences"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "food recommendations preferences",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:8080/food/recommendations/preferences",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"food",
+						"recommendations",
+						"preferences"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "food details",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -198,16 +449,10 @@
 				"header": [],
 				"body": {
 					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "food_id",
-							"value": "2",
-							"type": "text"
-						}
-					]
+					"formdata": []
 				},
 				"url": {
-					"raw": "localhost:8080/food/details/1",
+					"raw": "localhost:8080/food/details/119289",
 					"host": [
 						"localhost"
 					],
@@ -215,7 +460,7 @@
 					"path": [
 						"food",
 						"details",
-						"1"
+						"119289"
 					]
 				}
 			},

@@ -5,7 +5,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 
-class FoodRecommendations:
+class FoodRecipeRecommendations:
     def __init__(self, dataset_path):
         print("Reading data from {}".format(dataset_path))
         data = pd.read_csv(dataset_path)
@@ -14,7 +14,7 @@ class FoodRecommendations:
         self.extracted_data = data[['RecipeId', 'Name', 'CookTime', 'PrepTime', 'TotalTime', 'RecipeIngredientParts',
                                'Calories', 'FatContent', 'SaturatedFatContent', 'CholesterolContent', 'SodiumContent',
                                'CarbohydrateContent', 'FiberContent', 'SugarContent', 'ProteinContent',
-                               'RecipeInstructions']]
+                               'RecipeInstructions', 'Description']]
 
         # Create a pipeline for data preprocessing and model training
         self.scaler = StandardScaler()
@@ -48,46 +48,49 @@ class FoodRecommendations:
 
     def _get_recommendations(self, user_preferences, allergy_keywords, max_total_time=None, n=10):
         user_features_scaled = self._preprocess_user_preferences(user_preferences)
-        _, neighbor_indices = self.pipeline['NN'].kneighbors(user_features_scaled,
-                                                        n_neighbors=n * 2)  # Retrieve more neighbors
-        recommended_recipes = self.extracted_data.iloc[neighbor_indices[0]]
+        _, neighbor_indices = self.pipeline['NN'].kneighbors(user_features_scaled, n_neighbors=n * 2)
+        recommended_recipes = self.extracted_data.iloc[
+            neighbor_indices[0]].copy()  # Explicit copy to allow modifications
 
         # Convert TotalTime from ISO 8601 format to minutes and filter based on max_total_time
         if max_total_time is not None:
             recommended_recipes['TotalTimeMinutes'] = recommended_recipes['TotalTime'].apply(
-                self._convert_iso8601_to_minutes)
+                self._convert_iso8601_to_minutes
+            )
             recommended_recipes = recommended_recipes[recommended_recipes['TotalTimeMinutes'] <= max_total_time]
 
-        # Filter out recipes containing the allergy keywords
+        # Filter out recipes containing allergy keywords
         if allergy_keywords:
+            print("allergy keywords: ", allergy_keywords)
             for keyword in allergy_keywords:
                 recommended_recipes = recommended_recipes[
                     ~recommended_recipes['RecipeIngredientParts'].str.contains(keyword, case=False)]
+                recommended_recipes = recommended_recipes[
+                    ~recommended_recipes['Description'].str.contains(keyword, case=False)]
+                recommended_recipes = recommended_recipes[
+                    ~recommended_recipes['RecipeInstructions'].str.contains(keyword, case=False)]
+                recommended_recipes = recommended_recipes[
+                    ~recommended_recipes['Name'].str.contains(keyword, case=False)]
+
+        recommended_recipes = recommended_recipes.drop(columns=['TotalTimeMinutes'])
 
         return recommended_recipes.head(n)
 
     def get_recommendations(self, user_preferences, allergy_keywords=None, max_total_time=None, n=10):
-        if allergy_keywords is None:
+        if not allergy_keywords:
             allergy_keywords = []
         else:
             allergy_keywords = [keyword.strip() for keyword in allergy_keywords.split(',')]
 
         recommendations = self._get_recommendations(user_preferences, allergy_keywords, max_total_time, n)
 
-        columns_to_print = ['Name']
-        if 'RecipeCategory' in recommendations.columns:
-            columns_to_print.append('RecipeCategory')
-        if 'CookTime' in recommendations.columns:
-            columns_to_print.append('CookTime')
-        if 'PrepTime' in recommendations.columns:
-            columns_to_print.append('PrepTime')
-        if 'TotalTime' in recommendations.columns:
-            columns_to_print.append('TotalTime')
-        columns_to_print.append("RecipeId")
-
         recommended_recipes = []
-        for idx, recipe in recommendations[columns_to_print].iterrows():
-            recipe_info = {column: recipe[column] for column in columns_to_print}
-            recommended_recipes.append(recipe_info)
+        for idx, recipe in recommendations.iterrows():
+            recommended_recipes.append(self.food_details(recipe["RecipeId"]))
 
         return recommended_recipes
+
+    def food_details(self, dataset_index):
+        record = self.extracted_data[self.extracted_data["RecipeId"] == dataset_index].to_dict(orient='records')
+        if record:
+            return record
