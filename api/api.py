@@ -8,7 +8,7 @@ from fastapi import Security
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from database.db import SessionLocal
-from database.models import User, ExerciseHistory, FoodHistory, ExercisePreferences
+from database.models import User, ExerciseHistory, FoodHistory, ExercisePreferences, FoodPreferences
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
@@ -113,7 +113,7 @@ async def get_exercise_history(user_id: int = Depends(get_current_user_id), db: 
 
 
 @app.get("/exercise/details/{exercise_id}")
-async def get_exercise_history(exercise_id: int, user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+async def get_exercise_history(exercise_id: int):
     return  app.state.workout_recommender.workout_details(exercise_id)
 
 
@@ -284,6 +284,118 @@ async def log_food(
 async def get_food_history(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
     history = db.query(FoodHistory).filter(FoodHistory.user_id == user_id).all()
     return history
+
+
+@app.get("/food/details/{food_id}")
+async def get_exercise_history(food_id: int):
+    food = app.state.food_recipe_recommender.food_details(food_id)
+    if food:
+        return food
+    else:
+        raise HTTPException(status_code=404, detail=f"No food recipe found with id {food_id}.")
+
+
+@app.post("/food/search")
+async def search_food(
+        Calories: float = Form(...),
+        FatContent: float = Form(...),
+        SaturatedFatContent: float = Form(...),
+        CholesterolContent: float = Form(...),
+        SodiumContent: float = Form(...),
+        CarbohydrateContent: float = Form(...),
+        FiberContent: float = Form(...),
+        SugarContent: float = Form(...),
+        ProteinContent: float = Form(...),
+        Allergies: str = Form(...),
+        MaxTime: float = Form(...)
+):
+    return app.state.food_recipe_recommender.get_recommendations({
+        "Calories": Calories,
+        "FatContent": FatContent,
+        "SaturatedFatContent": SaturatedFatContent,
+        "CholesterolContent": CholesterolContent,
+        "SodiumContent": SodiumContent,
+        "CarbohydrateContent": CarbohydrateContent,
+        "FiberContent": FiberContent,
+        "SugarContent": SugarContent,
+        "ProteinContent": ProteinContent,
+    }, Allergies, MaxTime, 10)
+
+
+@app.post("/food/preferences")
+async def set_food_preferences(
+        Calories: float = Form(...),
+        FatContent: float = Form(...),
+        SaturatedFatContent: float = Form(...),
+        CholesterolContent: float = Form(...),
+        SodiumContent: float = Form(...),
+        CarbohydrateContent: float = Form(...),
+        FiberContent: float = Form(...),
+        SugarContent: float = Form(...),
+        ProteinContent: float = Form(...),
+        Allergies: str = Form(...),
+        MaxTime: float = Form(...),
+        user_id: int = Depends(get_current_user_id),
+        db: Session = Depends(get_db)
+):
+    # Attempt to find an existing preference record for the user
+    preferences = db.query(FoodPreferences).filter(FoodPreferences.user_id == user_id).first()
+
+    if preferences:
+        preferences.calories = Calories
+        preferences.fat_content = FatContent
+        preferences.saturated_fat_content = SaturatedFatContent
+        preferences.cholesterol_content = CholesterolContent
+        preferences.sodium_content = SodiumContent
+        preferences.carbohydrate_content = CarbohydrateContent
+        preferences.fiber_content = FiberContent
+        preferences.sugar_content = SugarContent
+        preferences.protein_content = ProteinContent
+        preferences.allergies = Allergies
+        preferences.max_time = MaxTime
+    else:
+        preferences = FoodPreferences(
+            user_id=user_id,
+            calories=Calories,
+            fat_content=FatContent,
+            saturated_fat_content=SaturatedFatContent,
+            cholesterol_content=CholesterolContent,
+            sodium_content=SodiumContent,
+            carbohydrate_content=CarbohydrateContent,
+            fiber_content=FiberContent,
+            sugar_content=SugarContent,
+            protein_content=ProteinContent,
+            allergies=Allergies,
+            max_time=MaxTime
+        )
+        db.add(preferences)
+
+    db.commit()
+    return {"message": "Food preferences updated successfully."}
+
+
+@app.get("/food/preferences")
+async def get_food_preferences(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    preferences = db.query(FoodPreferences).filter(FoodPreferences.user_id == user_id).first()
+
+    if preferences:
+        return preferences.to_dict()
+    else:
+        raise HTTPException(status_code=404, detail="No food preferences set")
+
+
+@app.get("/food/recommendations/preferences")
+async def get_food_recommendations_preferences(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    preferences = db.query(FoodPreferences).filter(FoodPreferences.user_id == user_id).first()
+
+    if preferences:
+        return app.state.food_recipe_recommender.get_recommendations(
+            preferences.to_dict()["preferences"],
+            preferences.to_dict()["filters"]["Allergies"],
+            preferences.to_dict()["filters"]["MaxTime"],
+            10)
+    else:
+        raise HTTPException(status_code=404, detail="No food preferences set")
 
 
 def _get_current_user_id(token: str = Depends(utils.oauth2_scheme)):
