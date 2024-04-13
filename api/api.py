@@ -8,7 +8,7 @@ from fastapi import Security
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from database.db import SessionLocal
-from database.models import User, ExerciseHistory, FoodHistory, ExercisePreferences, FoodPreferences
+from database.models import User, ExercisePlan, FoodHistory, ExercisePreferences, FoodPreferences
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
@@ -88,12 +88,14 @@ def _create_access_token(user_id: int, expires_delta: timedelta = None):
 async def log_exercise(
     exercise_id: int = Form(...),
     user_id: int = Depends(get_current_user_id),
-    timestamp: datetime = None,
     db: Session = Depends(get_db)):
 
-    if timestamp is None:
-        timestamp = datetime.utcnow()
-    new_entry = ExerciseHistory(exercise_id=exercise_id, user_id=user_id, timestamp=timestamp)
+    existing_entry = db.query(ExercisePlan).filter_by(exercise_id=exercise_id, user_id=user_id).first()
+    if existing_entry:
+        # If it exists, do nothing and return a message
+        return {"message": "Exercise already logged."}
+
+    new_entry = ExercisePlan(exercise_id=exercise_id, user_id=user_id)
     db.add(new_entry)
     db.commit()
     return {"message": "Exercise logged successfully."}
@@ -101,11 +103,11 @@ async def log_exercise(
 
 @app.get("/exercise/history")
 async def get_exercise_history(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
-    history = db.query(ExerciseHistory).filter(ExerciseHistory.user_id == user_id).all()
+    history = db.query(ExercisePlan).filter(ExercisePlan.user_id == user_id).all()
 
     ret_data = []
     for history_item in history:
-        history_item_dict =  history_item.to_dict()
+        history_item_dict = history_item.to_dict()
         history_item_dict["details"] = app.state.workout_recommender.workout_details(history_item_dict["exercise_id"])
         ret_data.append(history_item_dict)
 
@@ -245,7 +247,7 @@ async def get_exercise_preferences(user_id: int = Depends(get_current_user_id), 
 
 @app.get("/exercise/recommendations/history")
 async def get_exercise_recommendations_history(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
-    history = db.query(ExerciseHistory).filter(ExerciseHistory.user_id == user_id).all()
+    history = db.query(ExercisePlan).filter(ExercisePlan.user_id == user_id).all()
 
     exercise_ids = []
     for history_item in history[-5:]:
