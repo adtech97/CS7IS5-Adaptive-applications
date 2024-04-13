@@ -10,3 +10,5 @@ python-multipart
 numpy
 pandas
 scikit-learn
+streamlit
+streamlit-option-menu
