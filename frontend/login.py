@@ -1,15 +1,8 @@
 import streamlit as st
 from user_auth import userAuth as user_auth
-import hydralit_components as hc
+from streamlit_option_menu import option_menu
 from fetch_data_w_api import fetch_api_data
 import api_payloads as ap
-import pandas as pd
-import json
-
-
-def create_dataframe(response_data):
-    df = pd.DataFrame(response_data)
-    return df
 
 
 def login():
@@ -26,7 +19,7 @@ def login():
         st.write("Invalid Credentials")
 
 
-def set_exercise_preference(level, type, eq):
+def set_exercise_preference(level, type, eq, body_part):
     excercise_search_payload = ap.excercise_search_payload
     excercise_search_payload["Level_Beginner"] = "1" if level == "Beginer" else "0"
     excercise_search_payload["Level_Intermediate"] = "1" if level == "Intermediate" else "0"
@@ -36,25 +29,57 @@ def set_exercise_preference(level, type, eq):
     excercise_search_payload["Type_Stretching"] = "1" if type == "Flexibility" else "0"
     excercise_search_payload['Equipment_Gym'] = "1" if eq == "Gym" else "0"
     excercise_search_payload['Equipment_Body_Only'] = "1" if eq == "Body Weight" else "0"
-    excercise_search_payload["BodyPart_FullBody"] = "1" if type == "Full body" else "0"
+    excercise_search_payload["BodyPart_Abdominals"] = "1" if body_part == "Abdominals" else "0"
+    excercise_search_payload["BodyPart_Biceps"] = "1" if body_part == "Biceps" else "0"
+    excercise_search_payload["BodyPart_Chest"] = "1" if body_part == "Chest" else "0"
+    excercise_search_payload["BodyPart_Forearms"] = "1" if body_part == "Forearms" else "0"
+    excercise_search_payload["BodyPart_Neck"] = "1" if body_part == "Neck" else "0"
+    excercise_search_payload["BodyPart_Shoulders"] = "1" if body_part == "Shoulders" else "0"
+    excercise_search_payload["BodyPart_Triceps"] = "1" if body_part == "Triceps" else "0"
+    excercise_search_payload["BodyPart_Legs"] = "1" if body_part == "Legs" else "0"
+    excercise_search_payload["BodyPart_Back"] = "1" if body_part == "Back" else "0"
+    excercise_search_payload["BodyPart_FullBody"] = "1" if body_part == "Full body" else "0"
     return excercise_search_payload
 
 
-def side_bar_user_info():
-    st.sidebar.write("User Information")
+def side_bar_exercise_search():
+    st.sidebar.title("Search Exercises")
+    level = st.sidebar.selectbox("Activity Level", ["Beginer", "Intermediate", "Advanced"])
+    type = st.sidebar.selectbox("Goal", ["Endurance", "Strength", "Flexibility", ])
+    eq = st.sidebar.selectbox("Equipment", ["Gym", "Body Weight", "Bands"])
+    body_part = st.sidebar.selectbox("Body Part",
+                             ["Abdominals", "Biceps", "Chest", "Forearms", "Neck", "Shoulders", "Triceps", "Legs",
+                              "Back", "FullBody"])
+    submit = st.sidebar.button("Submit")
 
+    if submit:
+        st.divider()
+        st.sidebar.subheader("Your Exercise Search Results")
+        excercise_search_payload = set_exercise_preference(level, type, eq, body_part)
+        fetch_api_data_obj = fetch_api_data(access_token)
+        data = fetch_api_data_obj.fetch_data("http://127.0.0.1:8080/exercise/search", request_type="POST",
+                                             data=excercise_search_payload)
+        for item_data in data:
+            workout_search_item(item_data)
+
+        for k, v in excercise_search_payload.items():
+            excercise_search_payload[k] = '0'
+
+
+def side_bar_diet_search():
+    st.sidebar.title("Search Diets")
     age = st.sidebar.selectbox("Age", [i for i in range(1, 100)])
     gender = st.sidebar.selectbox("Gender", ["Male", "Female"])
     ht = st.sidebar.selectbox("Height (cm)", [i for i in range(100, 250)])
     wt = st.sidebar.selectbox("Weight (kg)", [i for i in range(30, 200)])
-    level =  st.sidebar.selectbox("Activity Level", ["Beginer", "Intermediate", "Advanced"])
-    type = st.sidebar.selectbox("Goal", ["Endurance", "Strength", "Flexibility", "Full body"])
-    eq = st.sidebar.selectbox("Equipment", ["Gym", "Body Weight", "Bands"])
+
     submit = st.sidebar.button("Submit")
-    return age, gender, ht, wt, level, type, submit,eq
+
+    if submit:
+        ...
 
 
-def add_search_item(exercise_id):
+def add_workout_search_item(exercise_id):
     fetch_api_data_obj = fetch_api_data(access_token)
     response = fetch_api_data_obj.fetch_data(
         "http://127.0.0.1:8080/exercise/log",
@@ -64,39 +89,90 @@ def add_search_item(exercise_id):
 
 
 def workout_search_item(item_data):
-    st.subheader(item_data["title"])
-    st.write(item_data["desc"])
+    st.sidebar.subheader(item_data["title"])
+    st.sidebar.write(item_data["desc"])
 
-    st.button(f"Add", key=item_data['exercise_id'], on_click=add_search_item, args=(item_data['exercise_id'],))
+    st.sidebar.button(f"Add", key=item_data['exercise_id'], on_click=add_workout_search_item, args=(item_data['exercise_id'],))
 
 
-def dashboard_content_workout():
-    age, gender, ht, wt, level, type, submit,eq = side_bar_user_info()
-    over_theme = {'txc_inactive': 'black','menu_background':'white','txc_active':'Black','option_active':'Grey'}
-    font_fmt = {'font-class':'h3','font-size':'95%'}
-    ms = hc.nav_bar(menu_definition=[ {"label": "Workout"}, {"label": "Nutrition"}, {"label": "Profile"}], override_theme=over_theme, key="Primary_nav_bar")
-    st.write(ms)
-    if ms == "Workout" and submit:
-        st.write("Your Workout Plan")
-        excercise_search_payload = set_exercise_preference(level, type, eq)
-        fetch_api_data_obj = fetch_api_data(access_token)
-        data = fetch_api_data_obj.fetch_data("http://127.0.0.1:8080/exercise/search", request_type="POST", data=excercise_search_payload)
-        for item_data in data:
-            workout_search_item(item_data)
-        # data = json.loads(data.decode())
-        # data.pop("encoded_values")
-        # df = create_dataframe(data)
-        # st.write(df)
-        op2 = hc.option_bar(option_definition=[{"label": "Like"}, {"label": "Dislike"}], override_theme=over_theme,font_styling={'font-class':'h4','font-size':'90'},horizontal_orientation=True, key=
-                           "option_bar_preference")
-        #Reset the payload fields once workout is fetched
-        for k, v in excercise_search_payload.items():
-            excercise_search_payload[k] = '0'
-     
-        
+def dashboard_workout():
+    side_bar_exercise_search()
+    st.title("Workout Plan")
+
+    # fetched logged workout exercises
+    fetch_api_data_obj = fetch_api_data(access_token)
+    data = fetch_api_data_obj.fetch_data("http://127.0.0.1:8080/exercise/history", request_type="GET")
+
+    icons = {
+        "Level_Beginner": "🟢",
+        "Level_Intermediate": "🟠",
+        "Level_Expert": "🔴",
+        "Type_Cardio": "🏃",
+        "Type_Strength": "💪",
+        "Type_Stretching": "🤸",
+        "Equipment_Gym": "🏋️",
+        "Equipment_Body_Only": "🧍"
+    }
+
+    # st.sidebar.write(df)
+    col1, col2, col3, col4 = st.columns([3, 1, 1, 1])
+    col1.subheader("Exercise")
+    col2.subheader("Difficulty Level")
+    col3.subheader("Type")
+    col4.subheader("Body Part")
+
+    for item in data:
+        with st.container():
+            col1, col2, col3, col4 = st.columns([3, 1, 1, 1])
+            col1.write(item['details']['title'])
+            encoded_values = item['details']['encoded_values']
+            # Display in each column
+            for key, value in encoded_values.items():
+                if value == 1:  # Only display if the value is 1
+                    if 'Level' in key:
+                        col2.write(icons.get(key, key.replace("Level_", "")))
+                    elif 'Type' in key:
+                        col3.write(icons.get(key, key.replace("Type_", "")))
+                    elif 'BodyPart' in key:
+                        col4.write(icons.get(key, key.replace("BodyPart_", "")))
+
+    # fetch workout recommendations
+    st.divider()
+    st.title("Workout Recommendations")
+    fetch_api_data_obj = fetch_api_data(access_token)
+    data = fetch_api_data_obj.fetch_data("http://127.0.0.1:8080/exercise/recommendations/history", request_type="GET")
+    for item_data in data:
+        st.subheader(item_data["title"])
+        st.write(item_data["desc"])
+
+        st.button(f"Add", key=item_data['exercise_id'], on_click=add_workout_search_item,
+                  args=(item_data['exercise_id'],))
+
+
+def dashboard_diet():
+    side_bar_diet_search()
+
+
+def dashboard_content():
+    ms = option_menu(None, ["Workout", "Nutrition"],
+        icons=['bi-person-arms-up', 'bi-cup-hot-fill'],
+        menu_icon="cast", default_index=0, orientation="horizontal",
+        styles={
+            "container": {"padding": "1px", "background-color": "#fafafa", "color": "black"},
+            "icon": {"color": "orange", "font-size": "25px"},
+            "nav-link": {"font-size": "25px", "text-align": "left", "margin": "0px",
+                         "--hover-color": "#FFEBEE", "color": "black"},
+            "nav-link-selected": {"background-color": "#C62828", "color": "white"},
+        }
+    )
+    if ms == "Workout":
+        dashboard_workout()
+    else:
+        dashboard_diet()
+
 
 if __name__ == "__main__":
-    st.set_page_config(layout='wide',initial_sidebar_state='collapsed')
+    st.set_page_config(layout='wide', initial_sidebar_state='expanded')
     access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzczMDM0ODQ1fQ.ig1kuBWUmtTruWRdCzPcBa4Qexvb9Tui0TYMz7amjao"
     if access_token:
-        dashboard_content_workout()
+        dashboard_content()
