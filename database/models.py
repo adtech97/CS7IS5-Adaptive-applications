@@ -14,26 +14,22 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     password = Column(String)
 
-    exercise_history = relationship("ExerciseHistory", backref="user")
+    exercise_plan = relationship("ExercisePlan", backref="user")
     food_history = relationship("FoodHistory", backref="user")
     exercise_preferences = relationship("ExercisePreferences", back_populates="user", uselist=False)
     food_preferences = relationship("FoodPreferences", back_populates="user", uselist=False)
 
 
-class ExerciseHistory(Base):
-    __tablename__ = "exercise_history"
+class ExercisePlan(Base):
+    __tablename__ = "exercise_plan"
 
-    id = Column(Integer, primary_key=True, index=True)
-    exercise_id = Column(Integer, index=True)
-    user_id = Column(Integer, ForeignKey("user.id"))
-    timestamp = Column(DateTime, default=datetime.utcnow)
+    exercise_id = Column(Integer, index=True, primary_key=True)
+    user_id = Column(Integer, ForeignKey("user.id"), primary_key=True)
 
     def to_dict(self):
         return {
-                "id": self.id,
                 "exercise_id": self.exercise_id,
                 "user_id": self.user_id,
-                "timestamp": self.timestamp
             }
 
 

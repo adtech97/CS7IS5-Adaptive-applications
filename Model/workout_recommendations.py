@@ -113,10 +113,16 @@ class WorkoutRecommendations:
 
         results = []
         for unique_dict in unique_dicts:
-            result = self.get_recommendations(unique_dict, n)
+            result = [rec for rec in self.get_recommendations(unique_dict, n) if rec["exercise_id"] not in selected_dataset_indices]
             results.extend(result)
 
-        return results
+        # remove duplicate results
+        unique_results = {}
+        for result in results:
+            if result["exercise_id"] not in unique_results:
+                unique_results[result["exercise_id"]] = result
+
+        return list(unique_results.values())
 
     def workout_details(self, dataset_index):
         record = self.data_encoded[self.data_encoded["Unnamed: 0"] == dataset_index].to_dict(orient='records')[0]

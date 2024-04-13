@@ -141,12 +141,15 @@ def dashboard_workout():
     st.title("Workout Recommendations")
     fetch_api_data_obj = fetch_api_data(access_token)
     data = fetch_api_data_obj.fetch_data("http://127.0.0.1:8080/exercise/recommendations/history", request_type="GET")
-    for item_data in data:
-        st.subheader(item_data["title"])
-        st.write(item_data["desc"])
+    if data:
+        for item_data in data:
+            st.subheader(item_data["title"])
+            st.write(item_data["desc"])
 
-        st.button(f"Add", key=item_data['exercise_id'], on_click=add_workout_search_item,
-                  args=(item_data['exercise_id'],))
+            st.button(f"Add", key=item_data['exercise_id'], on_click=add_workout_search_item,
+                      args=(item_data['exercise_id'],))
+    else:
+        st.write("No recommendations available based on your workout.")
 
 
 def dashboard_diet():
@@ -173,6 +176,6 @@ def dashboard_content():
 
 if __name__ == "__main__":
     st.set_page_config(layout='wide', initial_sidebar_state='expanded')
-    access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzczMDM0ODQ1fQ.ig1kuBWUmtTruWRdCzPcBa4Qexvb9Tui0TYMz7amjao"
+    access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzczMDUxMDcxfQ.AVXFYHc0UzrFfM5tPtZEQCe5-W1VC5AKLTsEI6DhsPE"
     if access_token:
         dashboard_content()
