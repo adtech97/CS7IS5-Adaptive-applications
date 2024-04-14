@@ -7,6 +7,7 @@ from fetch_data_w_api import fetch_api_data
 import api_payloads as ap
 import hydralit_components as hc
 import pandas as pd
+from annotated_text import annotated_text
 
 
 def login():
@@ -56,6 +57,9 @@ def set_diet_preference(calories, protien, max_time, alergies):
 
 
 def side_bar_exercise_search():
+    _, col, _ = st.sidebar.columns(3)
+    with col:
+        st.sidebar.image("workout.png", width=350)
     st.sidebar.title("Search Exercises")
     level = st.sidebar.selectbox("Activity Level", ["Beginer", "Intermediate", "Advanced"])
     type = st.sidebar.selectbox("Goal", ["Endurance", "Strength", "Flexibility", ])
@@ -81,6 +85,9 @@ def side_bar_exercise_search():
 
 
 def side_bar_diet_search():
+    _, col, _ = st.sidebar.columns(3)
+    with col:
+        st.sidebar.image("diet.png", width=350)
     st.sidebar.title("Search Diets")
     age = st.sidebar.selectbox("Age", [i for i in range(1, 100)], index=25)
     gender = st.sidebar.selectbox("Gender", ["Male", "Female"], index=0)
@@ -162,12 +169,15 @@ def side_bar_diet_search():
             st.write("No diet recommendations could be generated based on your preferences.")
 
 
+colors = "#F96167", "#FEDF00", "#00246B", "#D9381E", "#20948B", "#6AB187", "7F00FF", "963D7F", "00356B"
+
 def print_recipe_details(recipe):
     with st.container(border=True):
         st.subheader(recipe["Name"])
         st.write(
             f"🕒 Time: {recipe['TotalTime']} mins \t 💪 Protein: {recipe['ProteinContent']} \t 🔥Calories: {recipe['Calories']}")
-        st.markdown(f"#### Ingredients:\n{' '.join(['**' + ing + '**' for ing in recipe['RecipeIngredientParts']])}")
+        st.markdown(f"#### Ingredients:")
+        annotated_text([(ing, "", random.choice(colors)) for ing in recipe['RecipeIngredientParts']])
         st.markdown("#### Description:")
         st.write(recipe["Description"])
         st.markdown(f"#### Instructions:")
@@ -262,7 +272,7 @@ icons = {
 
 def dashboard_workout():
     side_bar_exercise_search()
-    st.title("Workout Plan")
+    st.markdown("## Workout Plan")
 
     # fetched logged workout exercises
     fetch_api_data_obj = fetch_api_data(access_token)
@@ -293,7 +303,7 @@ def dashboard_workout():
 
     # fetch workout recommendations
     st.divider()
-    st.title("Workout Recommendations")
+    st.markdown("## Workout Recommendations")
     fetch_api_data_obj = fetch_api_data(access_token)
     data = fetch_api_data_obj.fetch_data("http://127.0.0.1:8080/exercise/recommendations/history", request_type="GET")
     if data:
