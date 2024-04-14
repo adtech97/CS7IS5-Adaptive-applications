@@ -16,3 +16,16 @@ excercise_search_payload = {'Type_Cardio': '0',
 'BodyPart_Legs': '0',
 'BodyPart_Back': '0',
 'BodyPart_FullBody': '0'}
+
+
+diet_search_payload = {'Calories': '500',
+'FatContent': '20',
+'SaturatedFatContent': '5',
+'CholesterolContent': '30',
+'SodiumContent': '200',
+'CarbohydrateContent': '50',
+'FiberContent': '4',
+'SugarContent': '8',
+'ProteinContent': '25',
+'Allergies': 'ginger',
+'MaxTime': '30'}

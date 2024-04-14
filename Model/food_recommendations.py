@@ -86,7 +86,7 @@ class FoodRecipeRecommendations:
 
         recommended_recipes = []
         for idx, recipe in recommendations.iterrows():
-            recommended_recipes.append(self.food_details(recipe["RecipeId"]))
+            recommended_recipes.extend(self.food_details(recipe["RecipeId"]))
 
         return recommended_recipes
 
