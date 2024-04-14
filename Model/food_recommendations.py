@@ -7,10 +7,10 @@ from sklearn.preprocessing import StandardScaler
 
 class FoodRecipeRecommendations:
     def __init__(self, dataset_path):
-        print("Reading data from {}".format(dataset_path))
+        print("[FoodRecipeRecommendations] Reading data from {}".format(dataset_path))
         data = pd.read_csv(dataset_path)
 
-        print("Processing dataset")
+        print("[FoodRecipeRecommendations] Processing dataset")
         self.extracted_data = data[['RecipeId', 'Name', 'CookTime', 'PrepTime', 'TotalTime', 'RecipeIngredientParts',
                                'Calories', 'FatContent', 'SaturatedFatContent', 'CholesterolContent', 'SodiumContent',
                                'CarbohydrateContent', 'FiberContent', 'SugarContent', 'ProteinContent',
@@ -28,7 +28,7 @@ class FoodRecipeRecommendations:
         # Define the feature names
         self.feature_names = ['Calories', 'FatContent', 'SaturatedFatContent', 'CholesterolContent', 'SodiumContent',
                               'CarbohydrateContent', 'FiberContent', 'SugarContent', 'ProteinContent']
-        print("Successfully loaded and encoded dataset.")
+        print("[FoodRecipeRecommendations] Successfully loaded and encoded dataset.")
 
     def _convert_iso8601_to_minutes(self, iso8601_duration):
         # Regular expression to extract hours (H) and minutes (M) from an ISO 8601 duration string
@@ -61,7 +61,6 @@ class FoodRecipeRecommendations:
 
         # Filter out recipes containing allergy keywords
         if allergy_keywords:
-            print("allergy keywords: ", allergy_keywords)
             for keyword in allergy_keywords:
                 recommended_recipes = recommended_recipes[
                     ~recommended_recipes['RecipeIngredientParts'].str.contains(keyword, case=False)]
@@ -77,6 +76,10 @@ class FoodRecipeRecommendations:
         return recommended_recipes.head(n)
 
     def get_recommendations(self, user_preferences, allergy_keywords=None, max_total_time=None, n=10):
+        print("[FoodRecipeRecommendations] Generating food recommendations for:")
+        print("  User preferences:", user_preferences)
+        print("  Allergies:", allergy_keywords)
+        print("  Max time:", max_total_time)
         if not allergy_keywords:
             allergy_keywords = []
         else:

@@ -12,3 +12,4 @@ pandas
 scikit-learn
 streamlit
 streamlit-option-menu
+st-annotated-text
