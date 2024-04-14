@@ -5,10 +5,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 class WorkoutRecommendations:
     def __init__(self, dataset_path):
-        print("Reading data from {}".format(dataset_path))
+        print("[WorkoutRecommendations] Reading data from {}".format(dataset_path))
         data = pd.read_csv(dataset_path)
 
-        print("Processing dataset")
+        print("[WorkoutRecommendations] Processing dataset")
         data.drop(columns=['Rating', 'RatingDesc'], inplace=True)
 
         categorical_columns = ['Type', 'BodyPart', 'Equipment', 'Level']
@@ -49,9 +49,11 @@ class WorkoutRecommendations:
 
         data_encoded.iloc[:, 3:] = data_encoded.iloc[:, 3:] #.astype(int)
         self.data_encoded = data_encoded.dropna(subset=['Desc'])
-        print("Successfully loaded and encoded dataset.")
+        print("[WorkoutRecommendations] Successfully loaded and encoded dataset.")
 
     def get_recommendations(self, user_preferences, n):
+        print("[WorkoutRecommendations] Generating workout recommendations for:")
+        print("  User preferences:", user_preferences)
         user_vector = np.array(list(user_preferences.values())).reshape(1, -1)
 
         cosine_similarities = []
@@ -102,6 +104,8 @@ class WorkoutRecommendations:
         """
         Recommendations based on selected exercises.
         """
+        print("[WorkoutRecommendations] Generating workout recommendations similar to exercises: "
+              f"{selected_dataset_indices}")
         encoded_vectors = []
         for index in selected_dataset_indices:
             record = self.data_encoded[self.data_encoded["Unnamed: 0"] == index].to_dict(orient='records')[0]
