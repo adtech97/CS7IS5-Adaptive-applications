@@ -308,7 +308,7 @@ async def search_food(
         FiberContent: float = Form(...),
         SugarContent: float = Form(...),
         ProteinContent: float = Form(...),
-        Allergies: str = Form(...),
+        Allergies: str = Form(None),
         MaxTime: float = Form(...)
 ):
     return app.state.food_recipe_recommender.get_recommendations({
